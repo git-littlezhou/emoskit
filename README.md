@@ -1,1 +1,1 @@
-# emos-svrkit
+# emoskit
