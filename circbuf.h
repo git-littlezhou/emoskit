@@ -104,7 +104,7 @@ namespace emoskit {
 		};
 
 		template<class T> inline_
-			CircBuf<T>::CircBuf(ull size, ProductionStrategy productionStrategy, WaitStrategy wait_strategy, int timeout_seconds) : productionStrategy_(productionStrategy)
+		CircBuf<T>::CircBuf(ull size, ProductionStrategy productionStrategy, WaitStrategy wait_strategy, int timeout_seconds) : productionStrategy_(productionStrategy)
 		{
 			if (!util::is_power_of_2(size))
 				size = util::roundup_pow_of_two(size);
@@ -149,7 +149,7 @@ namespace emoskit {
 		}
 
 		template<class T> inline_
-			CircBuf<T>::~CircBuf()
+		CircBuf<T>::~CircBuf()
 		{
 			if (buffer_ != nullptr) {
 				/*for (int i = 0; i < this->size_; ++i) {
@@ -167,7 +167,7 @@ namespace emoskit {
 		}
 
 		template<class T> inline_ llong
-			CircBuf<T>::take()
+		CircBuf<T>::take()
 		{
 			if (productionStrategy_ == ProductionStrategy::SINGLE_THREAD)
 				return single_producer_next(true);
@@ -175,7 +175,7 @@ namespace emoskit {
 		}
 
 		template<class T> inline_ llong
-			CircBuf<T>::poll()
+		CircBuf<T>::poll()
 		{
 			if (productionStrategy_ == ProductionStrategy::SINGLE_THREAD)
 				return single_producer_next(false);
@@ -183,7 +183,7 @@ namespace emoskit {
 		}
 
 		template<class T> inline_ llong
-			CircBuf<T>::mutil_producer_next(bool is_block)
+		CircBuf<T>::mutil_producer_next(bool is_block)
 		{
 			llong current, next, rollback_round;
 			do {
@@ -207,7 +207,7 @@ namespace emoskit {
 		}
 
 		template<class T> inline_ llong
-			CircBuf<T>::single_producer_next(bool is_block)
+		CircBuf<T>::single_producer_next(bool is_block)
 		{
 			llong current, next, rollback_round;
 			current = single_in_;
@@ -235,14 +235,14 @@ namespace emoskit {
 		}
 
 		template<class T> inline_ llong
-			CircBuf<T>::get_in()
+		CircBuf<T>::get_in()
 		{
 			return cache_in_;
 			EMOSKIT_MEMORY_FENCE_ACQUIRE;
 		}
 
 		template<class T> inline_ void
-			CircBuf<T>::update_cache_in()
+		CircBuf<T>::update_cache_in()
 		{
 			if (productionStrategy_ == ProductionStrategy::SINGLE_THREAD)
 				cache_in_ = single_in_;
@@ -251,13 +251,13 @@ namespace emoskit {
 		}
 
 		template<class T> inline_ bool
-			CircBuf<T>::is_free(const llong &seq)
+		CircBuf<T>::is_free(const llong &seq)
 		{
 			return this->buffer_[seq & this->mask_].isFree_;
 		}
 
 		template<class T> inline_ void
-			CircBuf<T>::publish(llong seq)
+		CircBuf<T>::publish(llong seq)
 		{
 			EMOSKIT_MEMORY_FENCE_RELEASE;
 			assert(buffer_[seq & mask_].isFree_ == true);
@@ -266,7 +266,7 @@ namespace emoskit {
 		}
 
 		template<class T> inline_ void
-			CircBuf<T>::consumer_done(llong seq)
+		CircBuf<T>::consumer_done(llong seq)
 		{
 			EMOSKIT_MEMORY_FENCE;
 			assert(buffer_[seq & mask_].isFree_ == false);
@@ -274,7 +274,7 @@ namespace emoskit {
 		}
 
 		template<class T> inline_ bool
-			CircBuf<T>::is_empty()
+		CircBuf<T>::is_empty()
 		{
 			if (productionStrategy_ == ProductionStrategy::MUTIL_THREADS)
 				return in_ == out_;
@@ -282,13 +282,13 @@ namespace emoskit {
 		}
 
 		template<class T> inline_ llong
-			CircBuf<T>::get_locality()
+		CircBuf<T>::get_locality()
 		{
 			return waitStrategy_->wait_for(*this);
 		}
 
 		template<class T> inline_ int
-			CircBuf<T>::get_move(T & ob)
+		CircBuf<T>::get_move(T & ob)
 		{
 			llong seq;
 			if ((seq = get_locality()) == -1)
@@ -301,13 +301,13 @@ namespace emoskit {
 		}
 
 		template<class T> inline_ llong
-			CircBuf<T>::get_locality_with_timeout(int timeout_seconds)
+		CircBuf<T>::get_locality_with_timeout(int timeout_seconds)
 		{
 			return timeoutWaitStrategy_->wait_for(*this, timeout_seconds);
 		}
 
 		template<class T> inline_ int
-			CircBuf<T>::get_move_with_timeout(T & ob, int timeout_seconds)
+		CircBuf<T>::get_move_with_timeout(T & ob, int timeout_seconds)
 		{
 			llong seq;
 			if ((seq = get_locality_with_timeout(timeout_seconds)) == -1)
@@ -320,7 +320,7 @@ namespace emoskit {
 		}
 
 		template<class T> inline_ T &
-			CircBuf<T>::operator[](llong idx)
+		CircBuf<T>::operator[](llong idx)
 		{
 			return buffer_[idx & mask_].task_;
 		}
