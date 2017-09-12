@@ -628,6 +628,9 @@ LIBOBJS
 EGREP
 GREP
 CXXCPP
+USER_DEFINE_PROTOBUF_FALSE
+USER_DEFINE_PROTOBUF_TRUE
+USER_PROTOC
 RANLIB
 HAVE_CXX11
 am__fastdepCC_FALSE
@@ -2916,7 +2919,7 @@ ac_config_headers="$ac_config_headers config.h"
 
 
 # Checks for programs.
-${CXXFLAGS="-O2"}
+CXXFLAGS="-O2"
 ac_ext=cpp
 ac_cpp='$CXXCPP $CPPFLAGS'
 ac_compile='$CXX -c $CXXFLAGS $CPPFLAGS conftest.$ac_ext >&5'
@@ -5202,6 +5205,8 @@ rm -f core conftest.err conftest.$ac_objext \
                 if test $protoc_found = yes -a $pb_linked = yes ; then
                         ac_cv_protobuf_dir="$tryprotobufdir"
                         pb_found=yes
+						pb_provided_by_user=yes
+						USER_PROTOC="$protoc_dir/protoc"
                 fi
 	fi
 
@@ -5230,7 +5235,12 @@ rm -f core conftest.err conftest.$ac_objext \
     conftest$ac_exeext conftest.$ac_ext
 		fi
 		if test $protoc_found = yes -a $pb_linked = yes ; then
-			ac_cv_protobuf_dir="system"
+			#Check whether user PROTOBUF_HOME environment variable
+			if test x$PROTOBUF_HOME = x ; then
+				ac_cv_protobuf_dir="system"
+			else
+				ac_cv_protobuf_dir="$PROTOBUF_HOME"
+			fi
 			pb_found=yes
 		fi
 	fi
@@ -5249,6 +5259,16 @@ $as_echo "$ac_cv_protobuf_dir" >&6; }
 cat >>confdefs.h <<_ACEOF
 #define PROTOBUF_HOME "$ac_cv_protobuf_dir"
 _ACEOF
+
+
+
+ if test x$pb_provided_by_user = xyes; then
+  USER_DEFINE_PROTOBUF_TRUE=
+  USER_DEFINE_PROTOBUF_FALSE='#'
+else
+  USER_DEFINE_PROTOBUF_TRUE='#'
+  USER_DEFINE_PROTOBUF_FALSE=
+fi
 
 
 if test "x$prefix" = "xNONE" ; then
@@ -6025,6 +6045,10 @@ Usually this means the macro was only invoked conditionally." "$LINENO" 5
 fi
 if test -z "${am__fastdepCC_TRUE}" && test -z "${am__fastdepCC_FALSE}"; then
   as_fn_error $? "conditional \"am__fastdepCC\" was never defined.
+Usually this means the macro was only invoked conditionally." "$LINENO" 5
+fi
+if test -z "${USER_DEFINE_PROTOBUF_TRUE}" && test -z "${USER_DEFINE_PROTOBUF_FALSE}"; then
+  as_fn_error $? "conditional \"USER_DEFINE_PROTOBUF\" was never defined.
 Usually this means the macro was only invoked conditionally." "$LINENO" 5
 fi
 

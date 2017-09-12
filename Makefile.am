@@ -1,5 +1,16 @@
 AUTOMAKE_OPTIONS = subdir-objects
 
+if USER_DEFINE_PROTOBUF
+PROTOC = @USER_PROTOC@
+else
+PROTOC = protoc
+endif
+
+network_event_handler.cpp: network_proto.pb.cc
+network_proto.pb.cpp: network_proto.pb.cc
+network_proto.pb.cc: network_proto.proto
+	${PROTOC} network_proto.proto --cpp_out=.
+
 lib_LIBRARIES = libemoskit.a
 libemoskit_a_SOURCES = 4-minheap-internal.cpp		\
 					   client_config.cpp 			\
@@ -10,7 +21,7 @@ libemoskit_a_SOURCES = 4-minheap-internal.cpp		\
 					   logger.cpp 					\
 					   murmur_hash.cpp 				\
 					   network_event_handler.cpp	\
-					   network_proto.pb.cpp 		\
+					   network_proto.pb.cc	 		\
 					   server.cpp 					\
 					   status.cpp 					\
 					   stream_buf_base.cpp 			\
@@ -80,3 +91,9 @@ pkginclude_HEADERS = backend.h						\
 					 thread_pool.h 					\
 					 util.h 						\
 					 wait_strategy.h
+
+clean-local:
+	@if test -e network_proto.pb.cc -o -e network_proto.pb.h; then	\
+		echo "rm -f network_proto.pb.*";							\
+		rm -f network_proto.pb.*;									\
+	fi

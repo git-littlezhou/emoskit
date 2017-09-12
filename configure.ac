@@ -8,7 +8,7 @@ AM_INIT_AUTOMAKE([foreign])
 AC_CONFIG_HEADERS([config.h])
 
 # Checks for programs.
-${CXXFLAGS="-O2"}
+CXXFLAGS="-O2"
 AC_LANG(C++)
 AX_CHECK_COMPILE_FLAG([-ffunction-sections], [CXXFLAGS+=" -ffunction-sections"], [])
 AX_CHECK_COMPILE_FLAG([-Wl,-gc-sections], [LDFLAGS+=" -Wl,-gc-sections"], [])
@@ -76,6 +76,8 @@ AC_CACHE_CHECK([for protobuf], ac_cv_protobuf_dir, [
                 if test $protoc_found = yes -a $pb_linked = yes ; then
                         ac_cv_protobuf_dir="$tryprotobufdir"
                         pb_found=yes
+						pb_provided_by_user=yes
+						USER_PROTOC="$protoc_dir/protoc"
                 fi
 	fi
 
@@ -90,7 +92,12 @@ AC_CACHE_CHECK([for protobuf], ac_cv_protobuf_dir, [
 				[pb_linked=no])
 		fi
 		if test $protoc_found = yes -a $pb_linked = yes ; then
-			ac_cv_protobuf_dir="system"
+			#Check whether user PROTOBUF_HOME environment variable
+			if test x$PROTOBUF_HOME = x ; then
+				ac_cv_protobuf_dir="system"
+			else
+				ac_cv_protobuf_dir="$PROTOBUF_HOME"
+			fi
 			pb_found=yes
 		fi
 	fi
@@ -103,6 +110,9 @@ AC_CACHE_CHECK([for protobuf], ac_cv_protobuf_dir, [
 ])
 
 AC_DEFINE_UNQUOTED([PROTOBUF_HOME], ["$ac_cv_protobuf_dir"], ["Define the home path of protobuf"])
+
+AC_SUBST([USER_PROTOC])
+AM_CONDITIONAL([USER_DEFINE_PROTOBUF], [test x$pb_provided_by_user = xyes])
 
 if test "x$prefix" = "xNONE" ; then
 	AC_DEFINE_UNQUOTED([EMOSKIT_HOME], ["$ac_default_prefix"], ["Define the home path of emoskit"])
