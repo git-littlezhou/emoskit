@@ -15,6 +15,7 @@
 * implied. See the License for the specific language governing
 * permissions and limitations under the License.
 *
+* MurmurHash3 was written by Austin Appleby, and is placed in the public domain.
 */
 
 #ifndef _MURMUR_HASH_H_
