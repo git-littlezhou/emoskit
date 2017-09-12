@@ -22,6 +22,7 @@ libemoskit_a_SOURCES = 4-minheap-internal.cpp		\
 					   murmur_hash.cpp 				\
 					   network_event_handler.cpp	\
 					   network_proto.pb.cc	 		\
+					   network_proto.proto	 		\
 					   server.cpp 					\
 					   status.cpp 					\
 					   stream_buf_base.cpp 			\
