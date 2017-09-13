@@ -137,8 +137,8 @@ am_libemoskit_a_OBJECTS = 4-minheap-internal.$(OBJEXT) \
 	config_parser.$(OBJEXT) ev_epoll.$(OBJEXT) ev_loop.$(OBJEXT) \
 	logger.$(OBJEXT) murmur_hash.$(OBJEXT) \
 	network_event_handler.$(OBJEXT) network_proto.pb.$(OBJEXT) \
-	server.$(OBJEXT) status.$(OBJEXT) stream_buf_base.$(OBJEXT) \
-	util.$(OBJEXT)
+	server.$(OBJEXT) server_config.$(OBJEXT) status.$(OBJEXT) \
+	stream_buf_base.$(OBJEXT) util.$(OBJEXT)
 libemoskit_a_OBJECTS = $(am_libemoskit_a_OBJECTS)
 PROGRAMS = $(bin_PROGRAMS)
 am__dirstamp = $(am__leading_dot)dirstamp
@@ -350,6 +350,7 @@ libemoskit_a_SOURCES = 4-minheap-internal.cpp		\
 					   network_proto.pb.cc	 		\
 					   network_proto.proto	 		\
 					   server.cpp 					\
+					   server_config.cpp 			\
 					   status.cpp 					\
 					   stream_buf_base.cpp 			\
 					   util.cpp
@@ -402,6 +403,7 @@ pkginclude_HEADERS = backend.h						\
 					 object_pool.h 					\
 					 output_buffer.h 				\
 					 server.h 						\
+					 server_config.h 				\
 					 server_context.h 				\
 					 service.h 						\
 					 service_method.h 				\
@@ -597,6 +599,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/network_event_handler.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/network_proto.pb.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/server.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/server_config.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/status.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/stream_buf_base.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/util.Po@am__quote@

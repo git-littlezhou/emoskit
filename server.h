@@ -36,6 +36,8 @@
 
 namespace emoskit {
 
+	class ServerConfig;
+
 	namespace common{
 		template<class T> class ThreadPool;
 	}
@@ -52,7 +54,7 @@ namespace emoskit {
 	class Server
 	{
 	public:
-		Server();
+		Server(ServerConfig* server_config);
 		virtual ~Server();
 
 		Server& operator=(const Server&) = delete;
@@ -99,6 +101,7 @@ namespace emoskit {
 		Service* service_;
 
 		ServerContext server_context_;
+		ServerConfig* server_config_;
 
 		//protobuf::Request request;
 

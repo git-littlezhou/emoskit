@@ -24,6 +24,7 @@ namespace emoskit {
 
 	extern const char * EMOSKIT_SERVER_MAIN_TEMPLATE;
 	extern const char * EMOSKIT_MAKEFILE_TEMPLATE;
+	extern const char * EMOSKIT_SERVER_CONFIG_TEMPLATE;
 
 }
 

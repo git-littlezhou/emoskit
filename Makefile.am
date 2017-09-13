@@ -24,6 +24,7 @@ libemoskit_a_SOURCES = 4-minheap-internal.cpp		\
 					   network_proto.pb.cc	 		\
 					   network_proto.proto	 		\
 					   server.cpp 					\
+					   server_config.cpp 			\
 					   status.cpp 					\
 					   stream_buf_base.cpp 			\
 					   util.cpp
@@ -77,6 +78,7 @@ pkginclude_HEADERS = backend.h						\
 					 object_pool.h 					\
 					 output_buffer.h 				\
 					 server.h 						\
+					 server_config.h 				\
 					 server_context.h 				\
 					 service.h 						\
 					 service_method.h 				\

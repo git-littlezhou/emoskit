@@ -22,26 +22,68 @@
 namespace emoskit {
 
 const char * EMOSKIT_SERVER_MAIN_TEMPLATE =
-		R"(
+	R"(
 #include <iostream>
 #include <signal.h>
 #include <assert.h>
 
 #include <emoskit/server.h>
+#include <emoskit/server_config.h>
 
 #include "$service_impl_file$.h"
 
 using namespace std;
 using namespace emoskit;
 
+void PrintHelp(const char* program) {
+	printf("Usage: %s [-c <config file>] [-l <log level>] [-d]\n", program);
+	printf("	-f <config file>             # server config file\n");
+	printf("	-l <log level>               # DEBUG:1, INFO:2, WARN:3, ERROR:4\n");
+	printf("	-d                           # daemonize\n");
+	printf("\n");
+
+	exit(0);
+}
+
 int main(int argc, char *argv[]){
 
-	emoskit_set_log_level(LOG_LEVEL_WARN);
+	const char * config_file = nullptr;
+	bool daemonize = false;
+	int log_level = -1;
+
+	int c;
+	while ((c = getopt(argc, argv, "c:hl:d")) != EOF) {
+		switch (c) {
+		case 'c':
+			config_file = optarg;
+			break;
+		case 'd':
+			daemonize = true;
+			break;
+		case 'l':
+			log_level = atoi(optarg);
+			break;
+		case  'h':
+		default:
+			PrintHelp(argv[0]);
+			break;
+		}
+	}
+
+	if (daemonize) util::Daemonize();
 
 	assert(signal(SIGPIPE, SIG_IGN) != SIG_ERR);
 
-	Server server;
-	server.set_event_loop_count(4);
+	if (nullptr == config_file) PrintHelp(argv[0]);
+
+	ServerConfig server_config;
+	if (!server_config.ReadConfigFile(config_file))
+		return 0;
+
+	if (log_level > 0)
+		server_config.set_log_level(log_level);
+
+	Server server(&server_config);
 
 	$service_impl_class$ service;
 
@@ -117,5 +159,21 @@ clean:
 	@$(RM) *.o
 	@$(RM) *.pb.*
 
+)";
+
+const char * EMOSKIT_SERVER_CONFIG_TEMPLATE =
+	R"(
+[Server]
+IP = 127.0.0.1
+Port = 50060
+EventLoopCnt = 3
+WorkerPoolCorePoolSize = 6
+WorkerPoolMaxPoolSize = 9
+WorkerPoolKeepAliveTimeSeconds = 60
+CircbufSize = 1024
+ 
+[Log]
+LogDir = ./log
+LogLevel = 3	# DEBUG:1, INFO:2, WARN:3, ERROR:4
 )";
 }

@@ -43,6 +43,8 @@ namespace emoskit {
 
 		void GenerateMethodNameHpp(SyntaxTree* syntax_tree, FILE* stream);
 
+		void GenerateServerConfigFile(SyntaxTree * syntax_tree, FILE * stream);
+
 		void GenerateMakefile(SyntaxTree* syntax_tree, FILE* stream, const char* protobuf_home, const char* emoskit_home);
 
 	private:

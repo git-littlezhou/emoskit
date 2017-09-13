@@ -51,6 +51,7 @@ namespace emoskit {
 		virtual const char* GetMethodNamesFileName(const char* name, char* dest, size_t size);
 		
 		virtual const char* GetClientConfigFileName(const char* name, char* dest, size_t size);
+		virtual const char* GetServerConfigFileName(const char * name, char * dest, size_t size);
 
 		virtual const char* GetDefineHeader(const char* hpp_file_name, char* dest, size_t size);
 

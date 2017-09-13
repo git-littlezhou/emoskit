@@ -316,6 +316,14 @@ namespace emoskit {
 	}
 
 	void 
+	ServerGenerator::GenerateServerConfigFile(SyntaxTree * syntax_tree, FILE * stream){
+		std::string contents = EMOSKIT_SERVER_CONFIG_TEMPLATE;
+		util::StrTrim(contents);
+		fprintf(stream, "%s", contents.c_str());
+		fprintf(stream, "\n");
+	}
+
+	void
 	ServerGenerator::GenerateMakefile(SyntaxTree * syntax_tree, FILE * stream, const char * protobuf_home, const char * emoskit_home){
 		char server_main_file[BUFFER_SIZE] = { 0 }, service_file[BUFFER_SIZE] = { 0 }, service_impl_file[BUFFER_SIZE] = { 0 };
 		char client_main_file[BUFFER_SIZE] = { 0 }, client_file[BUFFER_SIZE] = { 0 }, stub_file[BUFFER_SIZE] = { 0 };

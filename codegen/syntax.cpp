@@ -39,12 +39,14 @@ using namespace emoskit;
 #define BUFFER_SIZE 256
 
 void PrintHelp(const char* program) {
-	printf("Usage: emoskitc <-f Proto file> <-d destination dir>\n");
+	printf("Usage: %s <-f proto file> <-d destination dir>\n", program);
 	printf("Parse PROTO_FILES and generate output based on the options given:\n");
-	printf("	-f <Proto file>             # Proto File\n");
+	printf("	-f <proto file>             # Proto File\n");
 	printf("	-d <dir>                    # destination output dir\n");
 	printf("	-I <dir>                    # include path dir\n");
 	printf("\n");
+
+	exit(0);
 }
 
 int main(int argc, char * argv[]) {
@@ -71,9 +73,9 @@ int main(int argc, char * argv[]) {
 				include_paths.push_back(rp);
 			}
 			break;
+		case  'h':
 		default:
 			PrintHelp(argv[0]);
-			exit(-1);
 			break;
 		}
 	}
@@ -81,12 +83,10 @@ int main(int argc, char * argv[]) {
 	if (nullptr == pb_file) {
 		printf("Missing proto file...\n");
 		PrintHelp(argv[0]);
-		exit(0);
 	}
 	if (nullptr == output_dir) {
 		printf("Missing output dir...\n");
 		PrintHelp(argv[0]);
-		exit(0);
 	}
 
 	if (0 != access(output_dir, R_OK | W_OK | X_OK)) {
@@ -198,6 +198,23 @@ int main(int argc, char * argv[]) {
 			FILE * fp = fopen(filename, "w");
 			assert(NULL != fp);
 			svr_gen.GenerateServiceImplCpp(&tree, fp);
+			fclose(fp);
+
+			printf("%s: Generate %s file ... done\n", project, filename);
+		}
+		else {
+			printf("%s: %s is already exist... skip\n", project, filename);
+		}
+	}
+
+	// xx_server.conf
+	{
+		name_gen.GetServerConfigFileName(tree.service_name(), tmp, sizeof(tmp));
+		snprintf(filename, sizeof(filename), "%s/%s.conf", out_path, tmp);
+		if (0 != access(filename, F_OK)) {
+			FILE * fp = fopen(filename, "w");
+			assert(NULL != fp);
+			svr_gen.GenerateServerConfigFile(&tree, fp);
 			fclose(fp);
 
 			printf("%s: Generate %s file ... done\n", project, filename);

@@ -22,31 +22,39 @@
 #include <sys/socket.h>
 #include <netdb.h> 
 #include <sys/eventfd.h>
+
+#include "server_config.h"
 #include "logger.h"
 #include "server.h"
 #include "status.h"
 #include "task.h"
 #include "thread_pool.h"
 
-emoskit::Server::Server()
-	//:host_("222.201.145.219"), port_("50060")
-	: host_("127.0.0.1"), port_("50060")
-	//: host_("hadoop-0C"), port_("50060")
+emoskit::Server::Server(ServerConfig* server_config)
+	: server_config_(server_config)
 {
 	listen_fd_								= -1;
-	event_loop_count_						= 1;
-	thread_pool_core_pool_size_				= std::thread::hardware_concurrency() / 2;
-	thread_pool_max_pool_size_				= thread_pool_core_pool_size_;
-	thread_pool_keep_alive_time_seconds_	= 60;
-	circbuf_size_							= 1024;
+	host_									= server_config->server_ip();
+	port_									= std::to_string(server_config->server_port());
+	event_loop_count_						= server_config->event_loop_count();
+	thread_pool_core_pool_size_				= server_config->thread_pool_core_pool_size();
+	thread_pool_max_pool_size_				= server_config->thread_pool_max_pool_size();
+	thread_pool_keep_alive_time_seconds_	= server_config->thread_pool_keep_alive_time_seconds();
+	circbuf_size_							= server_config->circbuf_size();
 	thread_pool_							= nullptr;
 	event_loop_								= nullptr;
+
+	emoskit_set_log_level(server_config->log_level());
+	// TODO: LogDir
 }
 
 emoskit::Server::~Server()
 {
-	delete	  thread_pool_; 
-	delete [] event_loop_;
+	if(nullptr != thread_pool_)
+		delete	  thread_pool_; 
+
+	if(nullptr != event_loop_)
+		delete [] event_loop_;
 }
 
 void noinline_
