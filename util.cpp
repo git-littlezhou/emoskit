@@ -230,5 +230,25 @@ namespace emoskit {
 
 			return succeed_or_not;
 		}
+
+		void Daemonize() {
+			int fd;
+
+			// parent exits
+			if (fork() != 0) exit(0); 
+
+			// create a new session
+			setsid();
+
+			/* Every output is dupped to /dev/null. If emoskit is daemonized but
+			 * the 'logfile' is set to 'stdout' in the configuration file
+			 * it will not log at all. */
+			if ((fd = open("/dev/null", O_RDWR, 0)) != -1) {
+				dup2(fd, STDIN_FILENO);
+				dup2(fd, STDOUT_FILENO);
+				dup2(fd, STDERR_FILENO);
+				if (fd > STDERR_FILENO) close(fd);
+			}
+		}
 	}
 }

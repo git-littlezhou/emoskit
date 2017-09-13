@@ -208,6 +208,7 @@ namespace emoskit {
 		int noinline_ CreateSocketAndListen(const char * host, const char * serv, socklen_t * addrlen);
 		int noinline_ CreateSocketAndConnect(const char* ip, unsigned port, int timeout_ms, const char* bind_ip = nullptr, int bind_port = -1);
 		bool noinline_ ReadFile(const char* file_path, std::string* contents);
+		void noinline_ Daemonize();
 	}
 }
 #endif // ! _UTIL_H_
