@@ -53,7 +53,8 @@ int main() {
 	emoskit_set_log_level(LOG_LEVEL_DEBUG);
 
 	ClientConfig client_config;
-	client_config.ReadConfigFile("$client_conf_file$.conf");
+	if(!client_config.ReadConfigFile("$client_conf_file$.conf"))
+		return -1;
 
 	$client_class$ client(CreateStreamOrDie(&client_config), &client_config);
 
