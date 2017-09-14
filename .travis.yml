@@ -1,0 +1,19 @@
+sudo: required
+
+language: c++
+compiler: g++
+git:
+  submodules: false
+
+install:
+  - ./install-protobuf.sh
+
+script: 
+  - ./configure --prefix=/usr && make -j2 && sudo make install
+
+notifications:
+  email: true
+    #recipients:
+    # - ******@***.com
+    #on_success: [always|never|change]  default: change
+    #on_failure: [always|never|change]  default: always
