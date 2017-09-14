@@ -5,7 +5,7 @@
 
 联系人： little.zhou@foxmail.com
 
-emoskit[![Build Status]https://api.travis-ci.org/git-littlezhou/emoskit.svg?branch=master](https://travis-ci.org/git-littlezhou/emoskit)
+emoskit[![Build Status](https://api.travis-ci.org/git-littlezhou/emoskit.svg?branch=master)](https://travis-ci.org/git-littlezhou/emoskit)
 
 # 总览
   - 使用Protobuf作为IDL，用于描述RPC接口以及通信协议。
@@ -14,7 +14,7 @@ emoskit[![Build Status]https://api.travis-ci.org/git-littlezhou/emoskit.svg?bran
   - 提供简易的Client和Server配置方式。
 
 # 局限
-  - 目前只支持TCP协议，后续可用会加入UDP等的支持。
+  - 目前只支持TCP协议，后续可能会加入UDP等的支持。
   - 还没有提供过载保护、自适应拒绝请求等保护功能
 
 # 如何编译
@@ -28,7 +28,8 @@ emoskit必须依赖的第三方库Protobuf，在编译前，需要在系统上�
 #### emoikit编译安装方法
 跟很多项目一样，进入emoskit根目录，执行：
 
-    ./confiugre (--prefix=指定安装目录，默认安装到/usr/local目录下，--with-protobuf=指定protobuf所在安装目录，如果protobuf安装在系统目录或有设置环境变量则不需指定)
+    ./confiugre (--prefix=指定安装目录，默认安装到/usr/local目录下，--with-protobuf=指定protobuf所在安装目录，
+    	如果protobuf安装在系统目录或有设置环境变量则不需指定)
     make
     make install
 
@@ -57,11 +58,11 @@ message HelloReply {
 #### 生成代码
 
 ```bash
-(emoskit安装目录，有配置环境变量或者安装在系统目录的则只需调用emoskitc)/bin/emoskitc <-f proto file> <-d destination dir>
+(emoskit安装目录，有配置环境变量或安装在系统目录的则只需调用emoskitc)/bin/emoskitc <-f proto file> <-d destination dir>
  根据选项解析用户提供的proto文件并生成代码:
-    -f <proto file>             # 指定所用proto文件
-	-d <dir>                    # 生成代码输出目录
-	-I <dir>                    # 如果用户的proto文件依赖protobuf系统提供的.proto文件，则可以在这里指定include目录
+     -f <proto file>             # 指定所用proto文件
+     -d <dir>                    # 生成代码输出目录
+     -I <dir>                    # 如果用户的proto文件依赖protobuf系统提供的.proto文件，则可以在这里指定include目录
 
 example:
 emoskitc -f hello.proto -d .
