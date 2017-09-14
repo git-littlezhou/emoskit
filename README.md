@@ -23,13 +23,12 @@ emoskit[![Build Status](https://api.travis-ci.org/git-littlezhou/emoskit.svg?bra
   - G++-4.8及以上版本
 
 #### 安装第三方库
-emoskit必须依赖的第三方库Protobuf，在编译前，需要在系统上先安装好Protobuf 3.0或更新版本，也可执行目录下的install-protobuf.sh脚本进行安装。
+emoskit必须依赖第三方库Protobuf，在编译前，需要在系统上先安装好Protobuf 3.0或更新版本，也可执行目录下的install-protobuf.sh脚本进行安装。
 
 #### emoikit编译安装方法
 跟很多项目一样，进入emoskit根目录，执行：
 
-    ./confiugre (--prefix=指定安装目录，默认安装到/usr/local目录下，--with-protobuf=指定protobuf所在安装目录，
-    	如果protobuf安装在系统目录或有设置环境变量则不需指定)
+    ./confiugre (--prefix=指定安装目录，默认安装到/usr/local目录下，--with-protobuf=指定protobuf所在安装目录，如果protobuf安装在系统目录或有设置环境变量则不需指定)
     make
     make install
 
