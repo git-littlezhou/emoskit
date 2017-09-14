@@ -6,10 +6,10 @@ git:
   submodules: false
 
 install:
-  - ./install-protobuf.sh
+  - chmod +x install-protobuf.sh && ./install-protobuf.sh
 
 script: 
-  - ./configure --prefix=/usr && make -j2 && sudo make install
+  - chmod +x configure && ./configure --prefix=/usr && make -j2 && sudo make install
 
 notifications:
   email: true
