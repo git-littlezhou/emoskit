@@ -151,7 +151,22 @@ namespace emoskit {
 		return util::ToLower(dest);
 	}
 
-	const char * 
+	const char* 
+	NameGenerator::GetClientExceFileName(const char* name, char* dest, size_t size){
+		snprintf(dest, size, "%s_client", name);
+
+		return util::ToLower(dest);
+	}
+
+	const char* 
+	NameGenerator::GetServerExceFileName(const char * name, char * dest, size_t size)
+	{
+		snprintf(dest, size, "%s_server", name);
+
+		return util::ToLower(dest);
+	}
+
+	const char *
 	NameGenerator::GetDefineHeader(const char * hpp_file_name, char * dest, size_t size){
 		snprintf(dest, size, "_%s_H_", hpp_file_name);
 		return util::ToUpper(dest);

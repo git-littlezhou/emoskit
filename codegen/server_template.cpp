@@ -128,14 +128,14 @@ CLI_OBJS = $pb_file$.o $client_main_file$.o $client_file$.o $stub_file$.o
 %.o : %.cpp
 	$(CC) $(CXXFLAGS) $(CPPFLAGS) -c $< -o $@
 
-TARGETS = greeter_server greeter_client
+TARGETS = $server_exec_file$ $client_exec_file$
 
 all: $(TARGETS)
 
-greeter_server: $(SVR_OBJS)
+$server_exec_file$: $(SVR_OBJS)
 	$(CC) $^ $(LDFLAGS) $(LIBS) -o $@
 
-greeter_client: $(CLI_OBJS)
+$client_exec_file$: $(CLI_OBJS)
 	$(CC) $^ $(LDFLAGS) $(LIBS) -o $@
 
 $server_main_file$.cpp: $service_impl_file$.h

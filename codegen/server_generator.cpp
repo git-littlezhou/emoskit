@@ -325,17 +325,19 @@ namespace emoskit {
 
 	void
 	ServerGenerator::GenerateMakefile(SyntaxTree * syntax_tree, FILE * stream, const char * protobuf_home, const char * emoskit_home){
-		char server_main_file[BUFFER_SIZE] = { 0 }, service_file[BUFFER_SIZE] = { 0 }, service_impl_file[BUFFER_SIZE] = { 0 };
-		char client_main_file[BUFFER_SIZE] = { 0 }, client_file[BUFFER_SIZE] = { 0 }, stub_file[BUFFER_SIZE] = { 0 };
+		char server_main_file[BUFFER_SIZE] = { 0 }, service_file[BUFFER_SIZE] = { 0 }, service_impl_file[BUFFER_SIZE] = { 0 }, server_exec_file[BUFFER_SIZE] = { 0 };
+		char client_main_file[BUFFER_SIZE] = { 0 }, client_file[BUFFER_SIZE] = { 0 }, stub_file[BUFFER_SIZE] = { 0 }, client_exec_file[BUFFER_SIZE] = { 0 };
 		char pb_file[BUFFER_SIZE] = { 0 };
 
 		name_gen_->GetServerMainFileName(syntax_tree->service_name(), server_main_file, sizeof(server_main_file));
 		name_gen_->GetServiceFileName(syntax_tree->service_name(), service_file, sizeof(service_file));
 		name_gen_->GetServiceImplFileName(syntax_tree->service_name(), service_impl_file, sizeof(service_impl_file));
+		name_gen_->GetServerExceFileName(syntax_tree->service_name(), server_exec_file, sizeof(server_exec_file));
 
 		name_gen_->GetClientMainFileName(syntax_tree->service_name(), client_main_file, sizeof(client_main_file));
 		name_gen_->GetClientFileName(syntax_tree->service_name(), client_file, sizeof(client_file));
 		name_gen_->GetStubFileName(syntax_tree->service_name(), stub_file, sizeof(stub_file));
+		name_gen_->GetClientExceFileName(syntax_tree->service_name(), client_exec_file, sizeof(client_exec_file));
 
 		name_gen_->GetIDLFileName(syntax_tree->proto_file_name(), pb_file, sizeof(pb_file));
 		
@@ -374,10 +376,12 @@ namespace emoskit {
 		util::StrReplaceAll(contents, "$server_main_file$", server_main_file);
 		util::StrReplaceAll(contents, "$service_file$", service_file);
 		util::StrReplaceAll(contents, "$service_impl_file$", service_impl_file);
+		util::StrReplaceAll(contents, "$server_exec_file$", server_exec_file);
 
 		util::StrReplaceAll(contents, "$client_main_file$", client_main_file);
 		util::StrReplaceAll(contents, "$client_file$", client_file);
 		util::StrReplaceAll(contents, "$stub_file$", stub_file);
+		util::StrReplaceAll(contents, "$client_exec_file$", client_exec_file);
 
 		util::StrReplaceAll(contents, "$pb_file$", pb_file);
 
